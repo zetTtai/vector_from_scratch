@@ -3,6 +3,7 @@
 #include <utility>
 #include <iostream>
 #include <ostream>
+#include <cmath>
 
 
 template<typename T>
@@ -15,16 +16,19 @@ private:
     int _size;
     int _capacity;
 
-    void reserve(int newCapacity);
-
 public:
     Vector();
     Vector(const Vector&);
     ~Vector();
 
     void push_back(const T&);
+    T& at(const int);
 
+    void resize(int count);
+    void resize(int count, const T& value);
     int size() const;
+    
+    void reserve(int newCapacity);
     int capacity() const;
 
 };

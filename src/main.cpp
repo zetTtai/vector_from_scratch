@@ -2,7 +2,6 @@
 #include "Vector.cpp"
 
 int main() {
-    std::cout << "Hello world" << std::endl;
     Vector<int> v1;
 
     v1.push_back(1);
@@ -12,8 +11,19 @@ int main() {
     Vector<int> v2(v1);
 
     std::cout << v1 << std::endl;
+    std::cout << v1.at(1) << std::endl;
+    try {
+        std::cout << v1.at(5) << std::endl;
+    } catch (const std::out_of_range& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+    }
+
 
     std::cout << "----------" << std::endl;
+
+    v2.at(1) = 3;
+
+    v2.resize(1);
 
     std::cout << v2 << std::endl;
 

@@ -9,8 +9,8 @@ Vector<T>::Vector() {
 
 template<typename T>
 Vector<T>::Vector(const Vector& vec) {
-
     _objects = new T[vec._capacity];
+
     for (int i = 0; i < vec._size; i++) {
         _objects[i] = vec._objects[i];
     }
@@ -32,8 +32,9 @@ void Vector<T>::reserve(int newCapacity) {
     T *newArray = new T[newCapacity];
 
     for (int i = 0; i < _size; i++) {
-        newArray[i] = std::move(_objects[i]);
+        newArray[i] = _objects[i];
     }
+
     std::swap(_objects, newArray);
 
     delete [] newArray;
@@ -43,11 +44,39 @@ void Vector<T>::reserve(int newCapacity) {
 template<typename T>
 void Vector<T>::push_back(const T& object) {
     if (_size == _capacity)
-        reserve(2 * _capacity);
+        reserve(std::pow(_capacity, 2));
 
     _objects[_size++] = object;
 }
 
+template<typename T>
+T& Vector<T>::at(const int pos) {
+    if (pos < 0 || pos >= _size )
+        throw std::out_of_range("Index out of bounds");
+
+    return _objects[pos];
+}
+
+
+template<typename T>
+void Vector<T>::resize(int count) {
+    if (count == _size)
+        return;
+
+    if (count > _capacity || count < _capacity) {
+        reserve(count);
+    }
+}
+
+
+template<typename T>
+void Vector<T>::resize(int count, const T& value) {
+    if (count == _size)
+        return;
+    if (count > _size) {
+        return;
+    }
+}
 
 template<typename T>
 int Vector<T>::size() const {
