@@ -15,7 +15,7 @@ int main() {
     try {
         std::cout << v1.at(5) << std::endl;
     } catch (const std::out_of_range& e) {
-        std::cerr << "Error: " << e.what() << std::endl;
+        std::cerr << "Expected Error: " << e.what() << std::endl;
     }
 
 
@@ -23,7 +23,17 @@ int main() {
 
     v2.at(1) = 3;
 
+    std::cout << v2 << std::endl;
+
     v2.resize(1);
+
+    std::cout << v2 << std::endl;
+
+    v2.resize(3);
+
+    std::cout << v2 << std::endl;
+
+    v2.resize(5, 3);
 
     std::cout << v2 << std::endl;
 

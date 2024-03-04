@@ -25,20 +25,28 @@ Vector<T>::~Vector() {
 }
 
 template<typename T>
-void Vector<T>::reserve(int newCapacity) {
+void Vector<T>::reserve(size_t newCapacity) {
+    if (newCapacity == 0)
+        newCapacity = 2;
     if (newCapacity < _size)
         return;
-    
+
+    updateObjects(newCapacity);
+    _capacity = newCapacity;
+
+}
+
+template <typename T>
+void Vector<T>::updateObjects(size_t newCapacity)
+{
     T *newArray = new T[newCapacity];
 
-    for (int i = 0; i < _size; i++) {
+    for (size_t i = 0; i < _size; i++)
         newArray[i] = _objects[i];
-    }
 
     std::swap(_objects, newArray);
 
     delete [] newArray;
-    _capacity = newCapacity;
 }
 
 template<typename T>
@@ -50,7 +58,7 @@ void Vector<T>::push_back(const T& object) {
 }
 
 template<typename T>
-T& Vector<T>::at(const int pos) {
+T& Vector<T>::at(const size_t pos) {
     if (pos < 0 || pos >= _size )
         throw std::out_of_range("Index out of bounds");
 
@@ -59,22 +67,18 @@ T& Vector<T>::at(const int pos) {
 
 
 template<typename T>
-void Vector<T>::resize(int count) {
+void Vector<T>::resize(size_t count, const T& value) {
     if (count == _size)
         return;
-
-    if (count > _capacity || count < _capacity) {
+    if (count < _size) {
+        _size = count;
+        _capacity = count;
+    } else {
         reserve(count);
-    }
-}
-
-
-template<typename T>
-void Vector<T>::resize(int count, const T& value) {
-    if (count == _size)
-        return;
-    if (count > _size) {
-        return;
+        for (size_t i = _size; i < count; ++i) {
+            _objects[i] = value;
+        }
+        _size = count;
     }
 }
 
@@ -95,6 +99,8 @@ std::ostream& operator<<(std::ostream& os, const Vector<U>& vec) {
         if (i > 0) os << ", ";
         os << vec._objects[i];
     }
-    os << "]";
+    os << "]\n";
+    os << "SIZE: " << vec._size << "\n";
+    os << "CAPACITY: " << vec._capacity;
     return os;
 }
