@@ -9,14 +9,7 @@ Vector<T>::Vector() {
 
 template<typename T>
 Vector<T>::Vector(const Vector& vec) {
-    _objects = new T[vec._capacity];
-
-    for (int i = 0; i < vec._size; i++) {
-        _objects[i] = vec._objects[i];
-    }
-    
-    _size = vec._size;
-    _capacity = vec._capacity;
+    copy(vec);
 }
 
 template<typename T>
@@ -24,17 +17,7 @@ Vector<T>::~Vector() {
     delete[] _objects;
 }
 
-template<typename T>
-void Vector<T>::reserve(size_t newCapacity) {
-    if (newCapacity == 0)
-        newCapacity = 2;
-    if (newCapacity < _size)
-        return;
-
-    updateObjects(newCapacity);
-    _capacity = newCapacity;
-
-}
+/* Privates functions */
 
 template <typename T>
 void Vector<T>::updateObjects(size_t newCapacity)
@@ -45,9 +28,26 @@ void Vector<T>::updateObjects(size_t newCapacity)
         newArray[i] = _objects[i];
 
     std::swap(_objects, newArray);
+    _capacity = newCapacity;
 
     delete [] newArray;
 }
+
+template <typename T>
+void Vector<T>::copy(const Vector<T> &vec)
+{
+    _objects = new T[vec._capacity];
+
+    for (int i = 0; i < vec._size; i++)
+    {
+        _objects[i] = vec._objects[i];
+    }
+
+    _size = vec._size;
+    _capacity = vec._capacity;
+}
+
+/* Public functions */
 
 template<typename T>
 void Vector<T>::push_back(const T& object) {
@@ -56,6 +56,7 @@ void Vector<T>::push_back(const T& object) {
 
     _objects[_size++] = object;
 }
+
 
 template<typename T>
 T& Vector<T>::at(const size_t pos) {
@@ -67,7 +68,7 @@ T& Vector<T>::at(const size_t pos) {
 
 
 template<typename T>
-void Vector<T>::resize(size_t count, const T& value) {
+void Vector<T>::resize(const size_t count, const T& value) {
     if (count == _size)
         return;
     if (count < _size) {
@@ -88,9 +89,18 @@ int Vector<T>::size() const {
 }
 
 template<typename T>
+void Vector<T>::reserve(const size_t newCapacity) {
+    if (newCapacity < _size)
+        return;
+    updateObjects(newCapacity == 0 ? 2 : newCapacity);
+}
+
+template<typename T>
 int Vector<T>::capacity() const {
     return _capacity;
 }
+
+/* Override operators*/
 
 template<typename U>
 std::ostream& operator<<(std::ostream& os, const Vector<U>& vec) {
@@ -103,4 +113,14 @@ std::ostream& operator<<(std::ostream& os, const Vector<U>& vec) {
     os << "SIZE: " << vec._size << "\n";
     os << "CAPACITY: " << vec._capacity;
     return os;
+}
+
+template<typename T>
+T& Vector<T>::operator[](const size_t index) {
+    return this->at(index);
+}
+
+template<typename T>
+void Vector<T>::operator=(const Vector<T>& vec) {
+    copy(vec);
 }

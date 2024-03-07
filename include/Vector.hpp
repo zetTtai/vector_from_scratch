@@ -15,8 +15,9 @@ private:
     T* _objects;
     int _size;
     int _capacity;
-    /* Create a new array with the given capacity*/
+    /*Set _objects as a new array with the given newCapacity*/
     void updateObjects(size_t newCapacity);
+    void copy(const Vector<T>& vec);
 
 public:
     Vector();
@@ -26,10 +27,12 @@ public:
     void push_back(const T&);
     T& at(const size_t);
 
-    // void resize(int count);
-    void resize(size_t count, const T& value = T());
+    void resize(const size_t count, const T& value = T());
     int size() const;
 
-    void reserve(size_t newCapacity);
+    void reserve(const size_t newCapacity);
     int capacity() const;
+
+    T& operator[](const size_t index);
+    void operator=(const Vector<T> &vec);
 };
