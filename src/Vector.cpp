@@ -47,6 +47,15 @@ void Vector<T>::copy(const Vector<T> &vec)
     _capacity = vec._capacity;
 }
 
+template <typename T>
+T &Vector<T>::getObject(const size_t pos) const
+{
+    if (pos < 0 || pos >= _size)
+        throw std::out_of_range("Index out of bounds");
+
+    return _objects[pos];
+}
+
 /* Public functions */
 
 template<typename T>
@@ -59,13 +68,14 @@ void Vector<T>::push_back(const T& object) {
 
 
 template<typename T>
-T& Vector<T>::at(const size_t pos) {
-    if (pos < 0 || pos >= _size )
-        throw std::out_of_range("Index out of bounds");
-
-    return _objects[pos];
+T& Vector<T>::at(const size_t index) {
+    return getObject(index);
 }
 
+template<typename T>
+T& Vector<T>::at(const size_t index) const {
+    return getObject(index);
+}
 
 template<typename T>
 void Vector<T>::resize(const size_t count, const T& value) {
@@ -117,10 +127,32 @@ std::ostream& operator<<(std::ostream& os, const Vector<U>& vec) {
 
 template<typename T>
 T& Vector<T>::operator[](const size_t index) {
-    return this->at(index);
+    return getObject(index);
+}
+
+template<typename T>
+T& Vector<T>::operator[](const size_t index) const {
+    return getObject(index);
 }
 
 template<typename T>
 void Vector<T>::operator=(const Vector<T>& vec) {
     copy(vec);
+}
+
+template<typename T>
+bool operator==(const Vector<T> &left_vector, const Vector<T> &right_vector) {
+    if (left_vector.size() != right_vector.size())
+        return false;
+    
+    for (int i = 0; i < left_vector.size(); i++)
+        if (left_vector[i] != right_vector[i])
+            return false;
+
+    return true;
+}
+
+template<typename T>
+bool operator!=(const Vector<T> &left_vector, const Vector<T> &right_vector) {
+    return !(left_vector == right_vector);
 }

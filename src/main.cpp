@@ -94,12 +94,20 @@ int main() {
     std::cout <<  "V1: " << v1 << std::endl;
     std::cout <<  "V3: " << v3 << std::endl;
 
+    print.testTitle("v3 == v1");
+
+    std::string test = v1 == v3 ? "Equals" : "ERROR: They are suppossed to be equals";
+    std::cout << test << std::endl;
+
     print.testTitle("v3[0] = 100");
 
     v3[0] = 100;
     std::cout <<  "V3: " << v3 << std::endl;
 
+    print.testTitle("v3 != v1");
 
+    test = v1 != v3 ? "Not Equals" : "ERROR: They are not suppossed to be equals";
+    std::cout << test << std::endl;
 
     return 0;
 }
